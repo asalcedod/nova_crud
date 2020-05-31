@@ -40,6 +40,54 @@ class App extends Component {
         e.preventDefault()
     }
 
+    deleteTask(id) {
+        if(confirm('Are you sure you want to delete this user?')) {
+          fetch(`/api/users/${id}`, {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            }
+          })
+            .then(res => res.json())
+            .then(data => {
+              console.log(data);
+              M.toast({html: 'User deleted'});
+              this.fetchUsers();
+            });
+        }
+      }
+    
+      editUser(id) {
+        fetch(`/api/users/${id}`)
+          .then(res => res.json())
+          .then(data => {
+            console.log(data);
+            this.setState({
+              name: data.name,
+              lastname: data.lastname,
+              age: data.age,
+              password: data.password,
+              _id: data._id
+            });
+          });
+      }
+
+    fetchUsers() {
+        fetch('/api/users')
+        .then(res => res.json())
+        .then(data => {
+            this.setState({tasks: data})
+            console.log(this.state.tasks)
+        });
+    }
+
+
+
+    componentDidMount() {
+        this.fetchUsers()
+    }
+
     handleChange(e) {
         const { name, value} = e.target
         this.setState({
