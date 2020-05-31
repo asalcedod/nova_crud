@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-    const user = await Users.findById(req.param.id)
+    const user = await Users.findById(req.params.id)
     res.json(user)
 });
 
