@@ -16,7 +16,27 @@ class App extends Component {
     }
 
     registerUser(e) {
-        console.log(this.state)
+        fetch('api/users', {
+            method: 'POST',
+            body: JSON.stringify(this.state),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            M.toast({html: 'User Saved'})
+            this.setState({
+                name: '',
+                lastname: '',
+                age: '',
+                password: '',
+                _id: '',
+                users: []
+            })
+        })
+        .catch(err => console.error(err))
         e.preventDefault()
     }
 
@@ -43,10 +63,10 @@ class App extends Component {
                                     <form onSubmit = {this.registerUser}>
                                         <div className = "row">
                                             <div className = "input-field col s12">
-                                                <input name = "name" onChange = {this.handleChange} type = "text" placeholder = "Name"></input>
-                                                <input name = "lastname" onChange = {this.handleChange} type = "text" placeholder = "Lastname"></input>
-                                                <input name = "age" onChange = {this.handleChange} type = "text" placeholder = "Age"></input>
-                                                <input name = "password" onChange = {this.handleChange} type = "password" placeholder = "Password"></input>
+                                                <input name = "name" onChange = {this.handleChange} type = "text" placeholder = "Name" value = {this.state.name}></input>
+                                                <input name = "lastname" onChange = {this.handleChange} type = "text" placeholder = "Lastname" value = {this.state.lastname}></input>
+                                                <input name = "age" onChange = {this.handleChange} type = "text" placeholder = "Age" value = {this.state.age}></input>
+                                                <input name = "password" onChange = {this.handleChange} type = "password" placeholder = "Password"value = {this.state.password}></input>
                                             </div>
                                         </div>
                                         <button type = "submit" className = "btn blue-grey darken-1">Register</button>
