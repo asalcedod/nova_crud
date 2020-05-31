@@ -13,7 +13,7 @@ class App extends Component {
             age: "",
             password: "",
             users: []
-            
+
         }
         this.registerUser = this.registerUser.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -21,51 +21,61 @@ class App extends Component {
 
     registerUser(e) {
         e.preventDefault()
-        if(this.state._id) {
-            fetch(`api/users/${this.state._id}`, {
-                method: 'PUT',
-                body: JSON.stringify(this.state),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(res => res.json())
-                .then(data => {
-                    M.toast({ html: 'User Updated' })
-                    this.setState({
-                        _id: '',
-                        user_id: '',
-                        name: '',
-                        lastname: '',
-                        age: '',
-                        password: ''
-                    })
-                    this.fetchUsers();
+        if (this.state._id) {
+            const { user_id, password } = this.state
+            if (user_id && password) {
+                fetch(`api/users/${this.state._id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(this.state),
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
                 })
-                .catch(err => console.error(err))
+                    .then(res => res.json())
+                    .then(data => {
+                        M.toast({ html: 'User Updated' })
+                        this.setState({
+                            _id: '',
+                            user_id: '',
+                            name: '',
+                            lastname: '',
+                            age: '',
+                            password: ''
+                        })
+                        this.fetchUsers();
+                    })
+                    .catch(err => console.error(err))
+            } else {
+                M.toast({ html: 'Identification or Password Incorrect' })
+            }
         } else {
-            fetch('api/users', {
-                method: 'POST',
-                body: JSON.stringify(this.state),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(res => res.json())
-                .then(data => {
-                    M.toast({ html: 'User Saved' })
-                    this.setState({
-                        user_id: '',
-                        name: '',
-                        lastname: '',
-                        age: '',
-                        password: ''
-                    })
-                    this.fetchUsers();
+            const { user_id, password } = this.state
+            if (user_id && password) {
+                fetch('api/users', {
+                    method: 'POST',
+                    body: JSON.stringify(this.state),
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
                 })
-                .catch(err => console.error(err))
+                    .then(res => res.json())
+                    .then(data => {
+                        M.toast({ html: 'User Saved' })
+                        this.setState({
+                            user_id: '',
+                            name: '',
+                            lastname: '',
+                            age: '',
+                            password: ''
+                        })
+                        this.fetchUsers();
+                    })
+                    .catch(err => console.error(err))
+            } else {
+                M.toast({ html: 'Identification or Password Incorrect' })
+            }
         }
     }
 
