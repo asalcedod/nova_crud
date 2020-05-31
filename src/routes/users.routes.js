@@ -14,8 +14,9 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const { name, lastname, age, password } = req.body
+    const { user_id, name, lastname, age, password } = req.body
     const newUser = new Users({
+        user_id,
         name,
         lastname,
         age,
@@ -28,8 +29,8 @@ router.post('/', async (req, res) => {
 })
 
 router.put('/:id', async (req,res) => {
-    const { name, lastname, age, password } = req.body
-    const newUser = { name, lastname, age, password }
+    const { user_id, name, lastname, age, password } = req.body
+    const newUser = { user_id, name, lastname, age, password }
     await Users.findByIdAndUpdate(req.params.id, newUser)
     res.json({
         status: 'User Updated'

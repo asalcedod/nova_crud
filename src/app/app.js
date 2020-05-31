@@ -7,6 +7,7 @@ class App extends Component {
         super()
         this.state = {
             _id: "",
+            user_id: "",
             name: "",
             lastname: "",
             age: "",
@@ -23,12 +24,7 @@ class App extends Component {
         if(this.state._id) {
             fetch(`api/users/${this.state._id}`, {
                 method: 'PUT',
-                body: JSON.stringify({
-                    name: this.state.name,
-                    lastname: this.state.lastname,
-                    age: this.state.age,
-                    password: this.state.password
-                }),
+                body: JSON.stringify(this.state),
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -39,6 +35,7 @@ class App extends Component {
                     M.toast({ html: 'User Updated' })
                     this.setState({
                         _id: '',
+                        user_id: '',
                         name: '',
                         lastname: '',
                         age: '',
@@ -60,6 +57,7 @@ class App extends Component {
                 .then(data => {
                     M.toast({ html: 'User Saved' })
                     this.setState({
+                        user_id: '',
                         name: '',
                         lastname: '',
                         age: '',
@@ -94,6 +92,7 @@ class App extends Component {
             .then(data => {
                 this.setState({
                     _id: data._id,
+                    user_id: data.user_id,
                     name: data.name,
                     lastname: data.lastname,
                     age: data.age,
@@ -137,9 +136,10 @@ class App extends Component {
                                     <form onSubmit={this.registerUser}>
                                         <div className="row">
                                             <div className="input-field col s12">
+                                                <input name="user_id" onChange={this.handleChange} type="text" placeholder="Identification" value={this.state.user_id}></input>
                                                 <input name="name" onChange={this.handleChange} type="text" placeholder="Name" value={this.state.name}></input>
                                                 <input name="lastname" onChange={this.handleChange} type="text" placeholder="Lastname" value={this.state.lastname}></input>
-                                                <input name="age" onChange={this.handleChange} type="text" placeholder="Age" value={this.state.age}></input>
+                                                <input name="age" onChange={this.handleChange} type="number" placeholder="Age" value={this.state.age}></input>
                                                 <input name="password" onChange={this.handleChange} type="password" placeholder="Password" value={this.state.password}></input>
                                             </div>
                                         </div>
@@ -152,6 +152,7 @@ class App extends Component {
                             <table>
                                 <thead>
                                     <tr>
+                                        <th>Identification</th>
                                         <th>Name</th>
                                         <th>Lastname</th>
                                         <th>Age</th>
@@ -162,6 +163,7 @@ class App extends Component {
                                         this.state.users.map(user => {
                                             return (
                                                 <tr key={user._id}>
+                                                    <td>{user.user_id}</td>
                                                     <td>{user.name}</td>
                                                     <td>{user.lastname}</td>
                                                     <td>{user.age}</td>
