@@ -13,8 +13,8 @@ class App extends Component {
             age: "",
             password: "",
             users: []
-
         }
+        this.buttonState = "Register"
         this.registerUser = this.registerUser.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
@@ -43,6 +43,7 @@ class App extends Component {
                             age: '',
                             password: ''
                         })
+                        this.buttonState = "Register"
                         this.fetchUsers();
                     })
                     .catch(err => console.error(err))
@@ -91,12 +92,22 @@ class App extends Component {
                 .then(res => res.json())
                 .then(data => {
                     M.toast({ html: 'User deleted' })
+                    this.buttonState = "Register"
+                    this.setState({
+                        _id: '',
+                        user_id: '',
+                        name: '',
+                        lastname: '',
+                        age: '',
+                        password: ''
+                    })
                     this.fetchUsers()
                 });
         }
     }
 
     editUser(id) {
+        this.buttonState = "Update"
         fetch(`api/users/${id}`)
             .then(res => res.json())
             .then(data => {
@@ -153,7 +164,7 @@ class App extends Component {
                                                 <input name="password" onChange={this.handleChange} type="password" placeholder="Password" value={this.state.password}></input>
                                             </div>
                                         </div>
-                                        <button type="submit" className="btn blue-grey darken-1">Register</button>
+                                        <button type="submit" className="btn blue-grey darken-1">{this.buttonState}</button>
                                     </form>
                                 </div>
                             </div>
